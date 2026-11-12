@@ -38,6 +38,11 @@ const userSchema = new mongoose.Schema(
 // TODO 2: definir el virtual populate "courses": cursos cuyo campo teacher referencia a este usuario.
 
 // TODO 3: configurar toJSON y toObject para que incluyan los virtuals.
+profileSchema.set("toJSON", { virtuals: true });
+profileSchema.set("toObject", { virtuals: true });
+
+
+
 
 const User = mongoose.model("User", userSchema);
 
