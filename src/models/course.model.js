@@ -56,15 +56,15 @@ const courseSchema = new mongoose.Schema(
     },
 
     // TODO 6: teacher (ObjectId, obligatorio, referencia al modelo User).
-    teacher: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-    },
+    // teacher: {
+    //     type: Types.ObjectId,
+    //     ref: "User",
+    // },
     // TODO 7: topics (array de ObjectId con referencia al modelo Topic).
-    topics: {
-        type: Schema.Types.ObjectId,
-        ref: "Topic",
-    },
+    // topics: {
+    //     type: Types.ObjectId,
+    //     ref: "Topic",
+    // },
   },
   { timestamps: true, versionKey: false },
 );

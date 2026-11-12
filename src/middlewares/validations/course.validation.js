@@ -10,29 +10,67 @@ export const courseIdValidation = [
 ];
 
 export const createCourseValidation = [
-  body("title"), // TODO 1: de 3 a 100 caracteres y único (custom con una consulta a la base).
+  body("title")
+  .isLength({ min: 3, max: 100 })
+  .custom(async (title) => {
+            const titleid = await Course.findOne({ title });
+            if (titleid) throw new Error("Ya existe un titulo con ese nombre");
+        })
+  , // TODO 1: de 3 a 100 caracteres y único (custom con una consulta a la base).
+  
 
-  body("description"), // TODO 2: de 10 a 500 caracteres.
+  body("description")
+  .isLength({ min: 10, max: 500 })
+  , // TODO 2: de 10 a 500 caracteres.
 
-  body("level"), // TODO 3: opcional; valores permitidos: ["beginner", "intermediate", "advanced"].
+  body("level")
+  .optional()
+  .isIn(["beginner", "intermediate", "advanced"])
+  , // TODO 3: opcional; valores permitidos: ["beginner", "intermediate", "advanced"].
 
-  body("price"), // TODO 4: opcional; número mayor o igual a 0.
 
-  body("schedule.day"), // TODO 5: valores permitidos: ["monday", "tuesday", "wednesday", "thursday", "friday"].
+  body("price")
+  .optional()
+  , // TODO 4: opcional; número mayor o igual a 0.
 
-  body("schedule.startTime"), // TODO 6: fecha válida (Date), obligatoria.
+  body("schedule.day")
+  .isIn(["monday", "tuesday", "wednesday", "thursday", "friday"])
+  , // TODO 5: valores permitidos: ["monday", "tuesday", "wednesday", "thursday", "friday"].
 
-  body("schedule.endTime"), // TODO 7: fecha válida (Date), obligatoria, y posterior a startTime (custom).
+  body("schedule.startTime") 
+  .notEmpty()
+    .isDate({ format: "YYYY-MM-DD", strictMode: true })
+, // TODO 6: fecha válida (Date), obligatoria.
 
-  body("teacher"), // TODO 8: obligatorio; ID de MongoDB válido y el teacher debe existir y estar activo, es decir, con deletedAt null (custom).
+  body("schedule.endTime")
+  .notEmpty()
+    .isDate({ format: "YYYY-MM-DD", strictMode: true })
+  , // TODO 7: fecha válida (Date), obligatoria, y posterior a startTime (custom).
 
-  body("topics"), // TODO 9: opcional; array cuyos IDs existan en la base (custom).
+  body("teacher")
+  .notEmpty()
+  , // TODO 8: obligatorio; ID de MongoDB válido y el teacher debe existir y estar activo, es decir, con deletedAt null (custom).
+  body("topics")
+  .optional()
+  , // TODO 9: opcional; array cuyos IDs existan en la base (custom).
 ];
 
 export const updateCourseValidation = [
-  param("id"), // TODO 10: validar con isMongoId().
+  param("id")  
+  .isMongoId()
+  .custom(async (id) => {
+      const existingUser = await User.findById(id);
+      if (!existingUser) {
+        throw new Error("El usuario no existe");
+      }
+      return true;
+    })
+, // TODO 10: validar con isMongoId().
 
-  body("title"), // TODO 11: igual que en la creación, pero opcional. La unicidad debe excluir al propio curso.
+
+  body("title")
+  
+  , // TODO 11: igual que en la creación, pero opcional. La unicidad debe excluir al propio curso.
 
   body("description"), // TODO 12: igual que en la creación, pero opcional.
 
