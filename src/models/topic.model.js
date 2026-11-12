@@ -4,6 +4,17 @@ import mongoose from "mongoose";
 const topicSchema = new mongoose.Schema(
   {
     // TODO 1: definir name (String, único, obligatorio, de 2 a 50 caracteres) y description (String, opcional, máximo 200 caracteres).
+    name: {
+        type: String,
+        required: true,
+        unique: true,
+        minlength: 2,
+        maxlength: 50,        
+    },
+    description: {
+        type: String,
+        maxlength: 200,        
+    },
   },
   { timestamps: true, versionKey: false },
 );
