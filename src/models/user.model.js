@@ -41,6 +41,11 @@ const userSchema = new mongoose.Schema(
 profileSchema.set("toJSON", { virtuals: true });
 profileSchema.set("toObject", { virtuals: true });
 
+profileSchema.virtual("course", {
+  ref: "Course",
+  localField: "_id",
+  foreignField: "users",
+});
 
 
 
