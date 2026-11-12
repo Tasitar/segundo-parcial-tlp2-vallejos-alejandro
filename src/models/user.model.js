@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema(
     profile: { type: profileSchema, required: true },
 
     // TODO 1: agregar el campo deletedAt para la eliminación lógica (tipo Date, valor por defecto null).
+    daletedAt: {
+      type: Date,
+      default: null
+    }
   },
   { timestamps: true, versionKey: false },
 );
