@@ -69,22 +69,35 @@ export const updateCourseValidation = [
 
 
   body("title")
-  
+  .isLength({ min: 3, max: 100 })
+  .optional()
+  .custom(async (title) => {
+            const titleid = await Course.findOne({ title });
+            if (titleid) throw new Error("Ya existe un titulo con ese nombre");
+        })
   , // TODO 11: igual que en la creación, pero opcional. La unicidad debe excluir al propio curso.
 
-  body("description"), // TODO 12: igual que en la creación, pero opcional.
+  body("description")
+   .optional()   
+  .isLength({ min: 10, max: 500 })
+  , // TODO 12: igual que en la creación, pero opcional.
 
-  body("level"), // TODO 13: igual que en la creación, pero opcional (valores permitidos: ["beginner", "intermediate", "advanced"]).
 
-  body("price"), // TODO 14: igual que en la creación, pero opcional.
+  body("level").optional()   .isIn(["beginner", "intermediate", "advanced"]), // TODO 13: igual que en la creación, pero opcional (valores permitidos: ["beginner", "intermediate", "advanced"]).
 
-  body("schedule.day"), // TODO 15: igual que en la creación, pero opcional (valores permitidos: ["monday", "tuesday", "wednesday", "thursday", "friday"]).
+  body("price") .optional(), // TODO 14: igual que en la creación, pero opcional.
 
-  body("schedule.startTime"), // TODO 16: igual que en la creación, pero opcional.
+  body("schedule.day").optional()  .isIn(["monday", "tuesday", "wednesday", "thursday", "friday"])
+ , // TODO 15: igual que en la creación, pero opcional (valores permitidos: ["monday", "tuesday", "wednesday", "thursday", "friday"]).
 
-  body("schedule.endTime"), // TODO 17: igual que en la creación, pero opcional (y posterior a startTime si ambos llegan).
+  body("schedule.startTime").optional() .isDate({ format: "YYYY-MM-DD", strictMode: true })
+ ,  // TODO 16: igual que en la creación, pero opcional.
 
-  body("teacher"), // TODO 18: igual que en la creación, pero opcional.
+  body("schedule.endTime").optional() .isDate({ format: "YYYY-MM-DD", strictMode: true })
+, // TODO 17: igual que en la creación, pero opcional (y posterior a startTime si ambos llegan).
 
-  body("topics"), // TODO 19: igual que en la creación, pero opcional.
+  body("teacher").optional() .notEmpty()
+, // TODO 18: igual que en la creación, pero opcional.
+
+  body("topics").optional(), // TODO 19: igual que en la creación, pero opcional.
 ];
